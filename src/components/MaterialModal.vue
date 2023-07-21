@@ -66,6 +66,7 @@
                 max="1000000"
                 step=".01"
                 v-model="price_per_uom"
+                @change="price_per_uom = formatNumber(price_per_uom)"
                 class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-950 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>
@@ -211,7 +212,7 @@ const name = modalStore.modal.item
   ? ref(modalStore.modal.item.name)
   : ref('');
 const price_per_uom = modalStore.modal.item
-  ? ref(modalStore.modal.item.price_per_uom)
+  ? ref(modalStore.modal.item.price_per_uom.toFixed(2))
   : ref('');
 const uom = modalStore.modal.item
   ? ref(modalStore.modal.item.uom)

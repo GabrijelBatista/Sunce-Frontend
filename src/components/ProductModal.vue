@@ -233,7 +233,7 @@ const name = modalStore.modal.item
   ? ref(modalStore.modal.item.name)
   : ref('');
 const price_sell = modalStore.modal.item
-  ? ref(modalStore.modal.item.price_sell)
+  ? ref(modalStore.modal.item.price_sell.toFixed(2))
   : ref('');
 const price_cost = modalStore.modal.item
   ? ref(modalStore.modal.item.price_cost)
@@ -269,6 +269,7 @@ const price_diff_computed = computed({
 
 const calculatePriceDiff = () => {
   price_diff.value = price_sell.value - price_cost.value;
+  price_sell.value = formatNumber(price_sell.value);
 };
 
 const toggleProductModal = () => {
