@@ -25,7 +25,7 @@
         <div class="mb-2 text-sm flex">
           <div class="m-2">
             <label
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-sm font-medium text-gray-900"
               for="name"
               >Ime jela</label
             >
@@ -36,12 +36,12 @@
               name="name"
               max="20"
               v-model="name"
-              class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-950 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
             />
           </div>
           <div class="m-2">
             <label
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-sm font-medium text-gray-900"
               for="name"
               >Kategorija</label
             >
@@ -54,7 +54,7 @@
         <div class="mb-2 text-sm flex">
           <div class="m-2">
             <label
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-sm font-medium text-gray-900"
               for="price_sell"
               >Cijena (KM)</label
             >
@@ -67,12 +67,12 @@
               step=".01"
               v-model="price_sell"
               @change="calculatePriceDiff()"
-              class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-950 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
             />
           </div>
           <div class="m-2">
             <label
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-sm font-medium text-gray-900"
               for="price_cost"
               >Utrošak</label
             >
@@ -84,7 +84,7 @@
           </div>
           <div class="m-2">
             <label
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-sm font-medium text-gray-900"
               for="price_cost"
               >Razlika</label
             >
@@ -99,7 +99,7 @@
         <div class="text-sm flex mt-2">
           <div>
             <label
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-sm font-medium text-gray-900"
               for="name"
               >Sastojci</label
             >

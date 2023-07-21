@@ -1,10 +1,10 @@
 <template>
   <div
-    class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 fixed right-5 top-5"
+    class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 fixed right-5 top-5"
     :class="
       notification.type === 'error'
-        ? 'text-red-800 bg-red-50 dark:text-red-400'
-        : 'text-green-800 bg-green-50 dark:text-green-400'
+        ? 'text-red-800 bg-red-50 '
+        : 'text-green-800 bg-green-50 '
     "
     role="alert"
   >

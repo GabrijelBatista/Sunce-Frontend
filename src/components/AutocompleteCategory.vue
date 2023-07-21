@@ -3,7 +3,7 @@
     <input
       autocomplete="off"
       type="text"
-      class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-950 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
       name="term"
       @input="getItems"
       @keyup.delete="getItems"

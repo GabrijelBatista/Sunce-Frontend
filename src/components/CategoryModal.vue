@@ -24,7 +24,7 @@
       <div class="mt-4">
         <p class="mb-4 text-sm">
           <label
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            class="block mb-2 text-sm font-medium text-gray-900"
             for="name"
             >Ime kategorije</label
           >
@@ -34,7 +34,7 @@
             name="name"
             max="20"
             v-model="name"
-            class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-950 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
           />
         </p>
         <button

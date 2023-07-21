@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-primary-950 border-primary-600 dark:bg-primary-400">
+  <div class="bg-primary-950 border-primary-600">
     <div class="max-w-4xl mx-auto p-2 float-right">
       <button
         class="rounded-3xl text-white border border-white w-38 p-2 m-2"

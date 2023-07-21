@@ -4,7 +4,7 @@
   >
     <a
       href="#"
-      class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+      class="flex items-center mb-6 text-2xl font-semibold text-gray-900"
     >
       <img
         class="w-8 h-8 mr-2"
@@ -14,11 +14,11 @@
       Logo
     </a>
     <div
-      class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
+      class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0"
     >
       <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
         <h1
-          class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+          class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl"
         >
           Sign in to your account
         </h1>
@@ -29,14 +29,14 @@
           <div>
             <label
               for="email"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-sm font-medium text-gray-900"
               >Email</label
             >
             <input
               type="email"
               name="email"
               id="email"
-              class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-950 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
               placeholder="name@company.com"
               required
               v-model="email"
@@ -45,7 +45,7 @@
           <div>
             <label
               for="password"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-sm font-medium text-gray-900"
               >Password</label
             >
             <input
@@ -53,7 +53,7 @@
               name="password"
               id="password"
               placeholder="••••••••"
-              class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-950 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
               required
               v-model="password"
             />
@@ -61,7 +61,7 @@
           <div>
             <label
               for="password_confirmation"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-sm font-medium text-gray-900"
               >Password Confirmation</label
             >
             <input
@@ -69,24 +69,22 @@
               name="password_confirmation"
               id="password-confirmation"
               placeholder="••••••••"
-              class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-950 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
               required
               v-model="password_confirmation"
             />
           </div>
           <button
             type="submit"
-            class="w-full text-white bg-primary-950 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-950 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-950 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            class="w-full text-white bg-primary-950 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-950 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
             Sign up
           </button>
-          <p
-            class="text-sm font-light text-gray-500 dark:text-gray-400"
-          >
+          <p class="text-sm font-light text-gray-500">
             Already have an account yet?
             <RouterLink
               to="/login"
-              class="font-medium text-primary-950 hover:underline dark:text-primary-500"
+              class="font-medium text-primary-950 hover:underline"
               >Sign in
             </RouterLink>
           </p>
