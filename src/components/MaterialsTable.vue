@@ -1,5 +1,7 @@
 <template>
-  <div class="mb-5 bg-gray-300 w-full p-10 pt-5 rounded-xl">
+  <div
+    class="mb-5 bg-gray-300 w-full p-10 pt-5 rounded-xl overflow-hidden"
+  >
     <table class="text-left w-full">
       <thead class="flex w-full">
         <tr class="flex w-full mb-1">

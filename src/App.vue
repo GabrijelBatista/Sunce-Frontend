@@ -23,7 +23,7 @@
       class="bg-gray-400 py-20 max-h-screen overflow-y-auto"
     >
       <div
-        class="relative overflow-x-auto max-w-4xl flex flex-wrap items-center justify-between mx-auto"
+        class="relative overflow-y-hidden overflow-x-auto max-w-4xl flex flex-wrap items-center justify-between mx-auto"
       >
         <RouterView class="mb-30" />
       </div>

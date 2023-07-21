@@ -1,5 +1,7 @@
 <template>
-  <div class="mb-5 bg-gray-300 w-full p-10 pt-5 rounded-xl">
+  <div
+    class="mb-5 bg-gray-300 w-full p-10 pt-5 rounded-xl overflow-hidden"
+  >
     <table class="text-left w-full">
       <thead class="flex w-full">
         <tr class="flex w-full mb-1">
@@ -60,18 +62,27 @@
             </div>
           </td>
         </tr>
+        <tr
+          v-show="request_in_progress && table_scroll === category.id"
+          class="mb-10"
+        >
+          <Spinner />
+        </tr>
       </tbody>
     </table>
   </div>
 </template>
 
 <script setup>
-import { onBeforeUnmount, onMounted } from 'vue';
+import { onBeforeUnmount, onMounted, computed } from 'vue';
 import { useProductStore } from '/src/store/product';
+import { useRequestStore } from '/src/store/request';
 import { useModalStore } from '/src/store/modal';
+import Spinner from './Spinner.vue';
 
 const productStore = useProductStore();
 const modalStore = useModalStore();
+const requestStore = useRequestStore();
 
 const props = defineProps({
   category: Object,
@@ -80,6 +91,18 @@ const props = defineProps({
 const editCategory = (category) => {
   modalStore.toggleModal({ name: 'Categories', item: category });
 };
+
+const request_in_progress = computed({
+  get() {
+    return requestStore.in_progress;
+  },
+});
+
+const table_scroll = computed({
+  get() {
+    return requestStore.table_scroll;
+  },
+});
 
 const formatNumber = (number) => {
   return Number(number).toFixed(2);
