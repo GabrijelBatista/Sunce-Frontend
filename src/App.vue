@@ -114,3 +114,9 @@ const current_route = computed({
   },
 });
 </script>
+
+<style>
+a.router-link-active button {
+  background-color: blue;
+}
+</style>

@@ -98,7 +98,7 @@ axios.interceptors.response.use(
           userStore.addToken(response.data.authorisation.token);
           axios.defaults.headers.common['Authorization'] =
             'Bearer ' + response.data.authorisation.token;
-          return axios(originalRequest);
+          return location.reload();
         })
         .catch((err) => {
           userStore.addToken('');

@@ -3,11 +3,6 @@
     <div class="max-w-4xl mx-auto p-2 float-right">
       <button
         class="rounded-3xl text-white border border-white w-38 p-2 m-2"
-      >
-        Export CSV
-      </button>
-      <button
-        class="rounded-3xl text-white border border-white w-38 p-2 m-2"
         @click="toggleCategoryModal()"
       >
         Dodaj kategoriju
