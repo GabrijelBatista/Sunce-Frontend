@@ -25,7 +25,7 @@ export const useProductStore = defineStore('product', {
           this.term = term;
           this.products = [];
         }
-        if (!requestStore.in_progress) {
+        if (!requestStore.in_progress.getProducts) {
           const endpoint =
             this.term !== null
               ? '/category/get-product-categories?page=' +
@@ -33,7 +33,7 @@ export const useProductStore = defineStore('product', {
                 '&term=' +
                 this.term
               : '/category/get-product-categories?page=' + page;
-          requestStore.updateInProgress(true);
+          requestStore.updateInProgress('getProducts', true);
           axios.get(endpoint).then((response) => {
             let items_processed = 0;
             if (!response.data.data[0]) {
@@ -68,7 +68,7 @@ export const useProductStore = defineStore('product', {
                 response.data.current_page;
               this.categories_last_page = response.data.last_page;
             };
-            requestStore.updateInProgress(false);
+            requestStore.updateInProgress('getProducts', false);
           });
         }
       }
@@ -83,65 +83,67 @@ export const useProductStore = defineStore('product', {
       const notificationStore = useNotificationStore();
       const requestStore = useRequestStore();
       const modalStore = useModalStore();
+      if (!requestStore.in_progress.saveProduct) {
+        requestStore.updateInProgress('saveProduct', true);
+        let method = 'post';
+        let path = 'add';
+        if (product.id) {
+          method = 'put';
+          path = 'edit';
+        }
 
-      requestStore.updateInProgress(true);
-      let method = 'post';
-      let path = 'add';
-      if (product.id) {
-        method = 'put';
-        path = 'edit';
-      }
-
-      let materials = [];
-      this.selected_items.forEach((el) => {
-        materials.push({
-          id: el.material.id,
-          material_quantity: el.material_quantity,
-        });
-      });
-
-      product.materials = materials;
-
-      axios({
-        method: method,
-        url: '/product/' + path,
-        data: product,
-      })
-        .then((response) => {
-          const category_index = this.products.findIndex(
-            (el) => el.id === product.category_id
-          );
-          if (category_index > -1) {
-            if (path === 'add') {
-              this.products[category_index].products.push(
-                response.data.product
-              );
-            }
-            if (path === 'edit') {
-              const product_index = this.products[
-                category_index
-              ].products.findIndex((el) => el.id === product.id);
-              this.products[category_index].products[product_index] =
-                response.data.product;
-            }
-          } else if (path === 'add') {
-            category.products = [product];
-            this.products.push(category);
-          }
-          notificationStore.addNotification({
-            type: 'success',
-            message: response.data.message,
+        let materials = [];
+        this.selected_items.forEach((el) => {
+          materials.push({
+            id: el.material.id,
+            material_quantity: el.material_quantity,
           });
-          requestStore.updateInProgress(false);
-          modalStore.toggleModal();
+        });
+
+        product.materials = materials;
+
+        axios({
+          method: method,
+          url: '/product/' + path,
+          data: product,
         })
-        .catch((error) => {
-          notificationStore.addNotification({
-            type: 'error',
-            message: error.response.data.message,
+          .then((response) => {
+            const category_index = this.products.findIndex(
+              (el) => el.id === product.category_id
+            );
+            if (category_index > -1) {
+              if (path === 'add') {
+                this.products[category_index].products.push(
+                  response.data.product
+                );
+              }
+              if (path === 'edit') {
+                const product_index = this.products[
+                  category_index
+                ].products.findIndex((el) => el.id === product.id);
+                this.products[category_index].products[
+                  product_index
+                ] = response.data.product;
+              }
+            } else if (path === 'add') {
+              category.products = [product];
+              this.products.push(category);
+            }
+            notificationStore.addNotification({
+              type: 'success',
+              message: response.data.message,
+            });
+            requestStore.updateInProgress('saveProduct', false);
+            modalStore.toggleModal();
+          })
+          .catch((error) => {
+            notificationStore.addNotification({
+              type: 'error',
+              message: error.response.data.message,
+            });
+            requestStore.updateInProgress('saveProduct', false);
           });
-          requestStore.updateInProgress(false);
-        });
+      }
     },
     selectItem(item) {
       this.selected_item = item;
@@ -170,9 +172,12 @@ export const useProductStore = defineStore('product', {
             this.products[category_index].last_page
         ) {
           const requestStore = useRequestStore();
-          if (!requestStore.in_progress) {
+          if (!requestStore.in_progress.getCategoryProducts) {
             requestStore.updateTableScroll(id);
-            requestStore.updateInProgress(true);
+            requestStore.updateInProgress(
+              'getCategoryProducts',
+              true
+            );
             const endpoint =
               this.term !== null
                 ? '/category/' +
@@ -193,7 +198,10 @@ export const useProductStore = defineStore('product', {
                 response.data.current_page;
               this.products[category_index].last_page =
                 response.data.last_page;
-              requestStore.updateInProgress(false);
+              requestStore.updateInProgress(
+                'getCategoryProducts',
+                false
+              );
               requestStore.updateTableScroll(0);
             });
           }
@@ -209,8 +217,8 @@ export const useProductStore = defineStore('product', {
         page <= this.materials_last_page
       ) {
         const requestStore = useRequestStore();
-        if (!requestStore.in_progress) {
-          requestStore.updateInProgress(true);
+        if (!requestStore.in_progress.getProductMaterials) {
+          requestStore.updateInProgress('getProductMaterials', true);
           axios
             .get('/product/' + id + '/get-materials?page=' + page)
             .then((response) => {
@@ -224,7 +232,10 @@ export const useProductStore = defineStore('product', {
               this.materials_current_page =
                 response.data.current_page;
               this.materials_last_page = response.data.last_page;
-              requestStore.updateInProgress(false);
+              requestStore.updateInProgress(
+                'getProductMaterials',
+                false
+              );
             });
         }
       }
@@ -238,8 +249,8 @@ export const useProductStore = defineStore('product', {
         const modalStore = useModalStore();
         const requestStore = useRequestStore();
         const notificationStore = useNotificationStore();
-        if (!requestStore.in_progress) {
-          requestStore.updateInProgress(true);
+        if (!requestStore.in_progress.deleteProduct) {
+          requestStore.updateInProgress('deleteProduct', true);
           axios
             .delete('/product/delete/' + id)
             .then((response) => {
@@ -267,7 +278,7 @@ export const useProductStore = defineStore('product', {
                 type: 'success',
                 message: response.data.message,
               });
-              requestStore.updateInProgress(false);
+              requestStore.updateInProgress('deleteProduct', false);
               modalStore.toggleModal();
             })
             .catch((error) => {
@@ -275,7 +286,7 @@ export const useProductStore = defineStore('product', {
                 type: 'error',
                 message: error.response.data.message,
               });
-              requestStore.updateInProgress(false);
+              requestStore.updateInProgress('deleteProduct', false);
             });
         }
       }

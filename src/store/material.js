@@ -23,7 +23,7 @@ export const useMaterialStore = defineStore('material', {
           this.term = term;
           this.products = [];
         }
-        if (!requestStore.in_progress) {
+        if (!requestStore.in_progress.getMaterials) {
           const endpoint =
             this.term !== null
               ? '/category/get-material-categories?page=' +
@@ -31,7 +31,7 @@ export const useMaterialStore = defineStore('material', {
                 '&term=' +
                 this.term
               : '/category/get-material-categories?page=' + page;
-          requestStore.updateInProgress(true);
+          requestStore.updateInProgress('getMaterials', true);
           axios.get(endpoint).then((response) => {
             let items_processed = 0;
             if (!response.data.data[0]) {
@@ -68,7 +68,7 @@ export const useMaterialStore = defineStore('material', {
                 response.data.current_page;
               this.categories_last_page = response.data.last_page;
             };
-            requestStore.updateInProgress(false);
+            requestStore.updateInProgress('getMaterials', false);
           });
         }
       }
@@ -77,55 +77,58 @@ export const useMaterialStore = defineStore('material', {
       const notificationStore = useNotificationStore();
       const requestStore = useRequestStore();
       const modalStore = useModalStore();
+      if (!requestStore.in_progress.saveMaterial) {
+        requestStore.updateInProgress('saveMaterial', true);
+        let method = 'post';
+        let path = 'add';
+        if (material.id) {
+          method = 'put';
+          path = 'edit';
+        }
 
-      requestStore.updateInProgress(true);
-      let method = 'post';
-      let path = 'add';
-      if (material.id) {
-        method = 'put';
-        path = 'edit';
-      }
-
-      axios({
-        method: method,
-        url: '/material/' + path,
-        data: material,
-      })
-        .then((response) => {
-          const category_index = this.materials.findIndex(
-            (el) => el.id === material.category_id
-          );
-          if (category_index > -1) {
-            if (path === 'add') {
-              this.materials[category_index].materials.push(material);
-            }
-            if (path === 'edit') {
-              const material_index = this.materials[
-                category_index
-              ].materials.findIndex((el) => el.id === material.id);
-              this.materials[category_index].materials[
-                material_index
-              ] = material;
-            }
-          } else if (path === 'add') {
-            category.materials = [material];
-            this.materials.push(category);
-          }
-          notificationStore.addNotification({
-            type: 'success',
-            message: response.data.message,
-          });
-          requestStore.updateInProgress(false);
-          modalStore.toggleModal();
-          this.material_products = [];
+        axios({
+          method: method,
+          url: '/material/' + path,
+          data: material,
         })
-        .catch((error) => {
-          notificationStore.addNotification({
-            type: 'error',
-            message: error.response.data.message,
+          .then((response) => {
+            const category_index = this.materials.findIndex(
+              (el) => el.id === material.category_id
+            );
+            if (category_index > -1) {
+              if (path === 'add') {
+                this.materials[category_index].materials.push(
+                  material
+                );
+              }
+              if (path === 'edit') {
+                const material_index = this.materials[
+                  category_index
+                ].materials.findIndex((el) => el.id === material.id);
+                this.materials[category_index].materials[
+                  material_index
+                ] = material;
+              }
+            } else if (path === 'add') {
+              category.materials = [material];
+              this.materials.push(category);
+            }
+            notificationStore.addNotification({
+              type: 'success',
+              message: response.data.message,
+            });
+            requestStore.updateInProgress('saveMaterial', false);
+            modalStore.toggleModal();
+            this.material_products = [];
+          })
+          .catch((error) => {
+            notificationStore.addNotification({
+              type: 'error',
+              message: error.response.data.message,
+            });
+            requestStore.updateInProgress('saveMaterial', false);
           });
-          requestStore.updateInProgress(false);
-        });
+      }
     },
     getCategoryMaterials(id) {
       const category_index = this.materials.findIndex(
@@ -146,9 +149,12 @@ export const useMaterialStore = defineStore('material', {
             this.materials[category_index].last_page
         ) {
           const requestStore = useRequestStore();
-          if (!requestStore.in_progress) {
+          if (!requestStore.in_progress.getCategoryMaterials) {
             requestStore.updateTableScroll(id);
-            requestStore.updateInProgress(true);
+            requestStore.updateInProgress(
+              'getCategoryMaterials',
+              true
+            );
             const endpoint =
               this.term !== null
                 ? '/category/' +
@@ -170,7 +176,10 @@ export const useMaterialStore = defineStore('material', {
                 response.data.current_page;
               this.materials[category_index].last_page =
                 response.data.last_page;
-              requestStore.updateInProgress(false);
+              requestStore.updateInProgress(
+                'getCategoryMaterials',
+                false
+              );
               requestStore.updateTableScroll(0);
             });
           }
@@ -183,8 +192,8 @@ export const useMaterialStore = defineStore('material', {
         page <= this.products_last_page
       ) {
         const requestStore = useRequestStore();
-        if (!requestStore.in_progress) {
-          requestStore.updateInProgress(true);
+        if (!requestStore.in_progress.getMaterialProducts) {
+          requestStore.updateInProgress('getMaterialProducts', true);
           axios
             .get('/material/' + id + '/get-products?page=' + page)
             .then((response) => {
@@ -196,7 +205,10 @@ export const useMaterialStore = defineStore('material', {
               }
               this.products_current_page = response.data.current_page;
               this.products_last_page = response.data.last_page;
-              requestStore.updateInProgress(false);
+              requestStore.updateInProgress(
+                'getMaterialProducts',
+                false
+              );
             });
         }
       }
@@ -209,8 +221,8 @@ export const useMaterialStore = defineStore('material', {
         const modalStore = useModalStore();
         const requestStore = useRequestStore();
         const notificationStore = useNotificationStore();
-        if (!requestStore.in_progress) {
-          requestStore.updateInProgress(true);
+        if (!requestStore.in_progress.deleteMaterial) {
+          requestStore.updateInProgress('deleteMaterial', true);
           axios
             .delete('/material/delete/' + id)
             .then((response) => {
@@ -240,7 +252,7 @@ export const useMaterialStore = defineStore('material', {
                 type: 'success',
                 message: response.data.message,
               });
-              requestStore.updateInProgress(false);
+              requestStore.updateInProgress('deleteMaterial', false);
               modalStore.toggleModal();
             })
             .catch((error) => {
@@ -248,7 +260,7 @@ export const useMaterialStore = defineStore('material', {
                 type: 'error',
                 message: error.response.data.message,
               });
-              requestStore.updateInProgress(false);
+              requestStore.updateInProgress('deleteMaterial', false);
             });
         }
       }

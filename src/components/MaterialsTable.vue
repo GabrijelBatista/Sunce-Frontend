@@ -25,7 +25,7 @@
         :id="'category-' + category.id"
       >
         <tr
-          class="flex w-full mb-1 h-10 bg-white rounded-xl"
+          class="flex w-full mb-1 bg-white rounded-xl"
           :key="material.id"
           v-for="material in category.materials"
         >
@@ -53,7 +53,10 @@
           </td>
         </tr>
         <tr
-          v-show="request_in_progress && table_scroll === category.id"
+          v-show="
+            request_in_progress.getCategoryMaterials &&
+            table_scroll === category.id
+          "
           class="mb-10"
         >
           <Spinner />

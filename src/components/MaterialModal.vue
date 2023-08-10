@@ -153,7 +153,10 @@
                     </div>
                   </td>
                 </tr>
-                <tr v-show="request_in_progress" class="mb-10">
+                <tr
+                  v-show="request_in_progress.getMaterialProducts"
+                  class="mb-10"
+                >
                   <Spinner />
                 </tr>
               </tbody>

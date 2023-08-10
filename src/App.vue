@@ -29,7 +29,10 @@
       </div>
       <Spinner
         v-show="
-          request_in_progress && !current_modal && !table_scroll
+          (request_in_progress.getCategoryMaterials ||
+            request_in_progress.getCategoryProducts) &&
+          !current_modal &&
+          !table_scroll
         "
         class="mb-32 -mt-20"
       />
