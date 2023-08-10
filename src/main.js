@@ -57,6 +57,8 @@ router.beforeEach(async (to, from) => {
     (to.name === 'Login' || to.name === 'Register')
   ) {
     return { name: 'Products' };
+  } else if (userStore.$state.token && !to.name) {
+    return { name: 'Products' };
   }
 });
 
