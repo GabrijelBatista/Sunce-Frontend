@@ -19,6 +19,10 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
+      path: '/',
+      name: 'Home',
+    },
+    {
       path: '/products',
       name: 'Products',
       component: Products,
@@ -54,10 +58,10 @@ router.beforeEach(async (to, from) => {
     return { name: 'Login' };
   } else if (
     userStore.$state.token &&
-    (to.name === 'Login' || to.name === 'Register')
+    (to.name === 'Login' ||
+      to.name === 'Register' ||
+      to.name === 'Home')
   ) {
-    return { name: 'Products' };
-  } else if (userStore.$state.token && !to.name) {
     return { name: 'Products' };
   }
 });
