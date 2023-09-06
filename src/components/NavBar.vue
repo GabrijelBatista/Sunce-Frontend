@@ -148,7 +148,6 @@ const logout = () => {
 };
 
 const getItems = () => {
-  console.log(term.value.length);
   if (term.value.length > 2 || term.value.length === 0) {
     if (current_route.value === 'Products') {
       productStore.getProducts(1, term.value);
