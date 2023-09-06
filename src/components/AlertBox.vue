@@ -1,6 +1,6 @@
 <template>
   <div
-    class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 fixed right-5 top-5"
+    class="p-4 mb-4 text-sm text-green-800 rounded-md bg-green-50 fixed right-5 top-5"
     :class="
       notification.type === 'error'
         ? 'text-red-800 bg-red-50 '

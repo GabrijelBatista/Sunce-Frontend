@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-4xl p-0 w-full mx-auto mb-20">
+  <div class="max-w-6xl p-0 w-full mx-auto mb-20">
     <ProductsTable
       :key="category.id"
       v-for="category in categories"

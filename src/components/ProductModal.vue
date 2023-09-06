@@ -4,11 +4,11 @@
   >
     <div class="max-w-4xl w-full p-2 bg-white rounded-md shadow-xl">
       <div class="flex items-center justify-between">
-        <h3 class="text-2xl">Jelo</h3>
+        <h3 class="text-2xl font-bold">Jelo</h3>
         <svg
           @click="toggleProductModal(false)"
           xmlns="http://www.w3.org/2000/svg"
-          class="w-8 h-8 text-red-900 cursor-pointer"
+          class="w-8 h-8 text-red-900 cursor-pointer hover:text-red-300"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -23,7 +23,7 @@
       </div>
       <div class="mt-2">
         <div class="mb-2 text-sm flex">
-          <div class="m-2">
+          <div class="m-2 w-full">
             <label
               class="block mb-2 text-sm font-medium text-gray-900"
               for="name"
@@ -36,10 +36,10 @@
               name="name"
               max="20"
               v-model="name"
-              class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
+              class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-md focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
             />
           </div>
-          <div class="m-2">
+          <div class="m-2 w-full">
             <label
               class="block mb-2 text-sm font-medium text-gray-900"
               for="name"
@@ -52,7 +52,7 @@
           </div>
         </div>
         <div class="mb-2 text-sm flex">
-          <div class="m-2">
+          <div class="m-2 w-full">
             <label
               class="block mb-2 text-sm font-medium text-gray-900"
               for="price_sell"
@@ -67,31 +67,33 @@
               step=".01"
               v-model="price_sell"
               @change="calculatePriceDiff()"
-              class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
+              class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-md focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
             />
           </div>
-          <div class="m-2">
-            <label
-              class="block mb-2 text-sm font-medium text-gray-900"
-              for="price_cost"
-              >Utrošak</label
-            >
-            <div
-              class="bordersm:text-sm rounded-lg block w-full p-2 text-red-500"
-            >
-              {{ formatNumber(price_cost_computed) }} KM
+          <div class="m-2 w-full text-center">
+            <div class="inline-block">
+              <label
+                class="block mb-2 text-sm font-medium text-gray-900"
+                for="price_cost"
+                >Utrošak</label
+              >
+              <div
+                class="bordersm:text-sm rounded-md block w-full p-2 text-red-500"
+              >
+                {{ formatNumber(price_cost_computed) }} KM
+              </div>
             </div>
-          </div>
-          <div class="m-2">
-            <label
-              class="block mb-2 text-sm font-medium text-gray-900"
-              for="price_cost"
-              >Razlika</label
-            >
-            <div
-              class="bordersm:text-sm rounded-lg block w-full p-2 text-green-500"
-            >
-              {{ formatNumber(price_diff_computed) }} KM
+            <div class="inline-block">
+              <label
+                class="block mb-2 text-sm font-medium text-gray-900"
+                for="price_cost"
+                >Razlika</label
+              >
+              <div
+                class="bordersm:text-sm rounded-md block w-full p-2 text-green-500"
+              >
+                {{ formatNumber(price_diff_computed) }} KM
+              </div>
             </div>
           </div>
         </div>
@@ -120,7 +122,7 @@
               max="1000000"
               step=".01"
               v-model="material_quantity"
-              class="my-2 bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
+              class="my-2 bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-md focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
             />
           </div>
           <div class="m-2 my-6">
@@ -128,10 +130,13 @@
           </div>
           <button
             type="button"
-            class="px-6 py-2 m-2 my-4 text-blue-100 bg-blue-600 rounded"
+            class="px-6 py-2 m-2 my-4 text-blue-100 bg-gray-600 rounded hover:bg-blue-300"
             @click="addMaterialToList(selected_material)"
           >
-            Add
+            <font-awesome-icon
+              :icon="['fas', 'circle-plus']"
+              size="xl"
+            />
           </button>
         </div>
 
@@ -141,7 +146,7 @@
             id="materials-body"
           >
             <tr
-              class="flex w-full mb-1 h-10 bg-white rounded-xl"
+              class="flex w-full mb-1 bg-white rounded-md"
               :key="material.material.id"
               v-for="(material, i) in selected_materials"
             >
@@ -149,13 +154,13 @@
                 {{ material.material.name }}
               </td>
               <td class="p-2 w-1/4 text-center">
-                <div class="rounded-xl bg-gray-400">
+                <div class="rounded-md bg-gray-400">
                   {{ material.material_quantity }}
                   {{ material.material.uom }}
                 </div>
               </td>
               <td class="p-2 w-1/4 text-center">
-                <div class="rounded-xl bg-red-400">
+                <div class="rounded-md bg-red-400">
                   {{
                     formatNumber(
                       material.material.price_per_uom *
@@ -167,7 +172,7 @@
               </td>
               <td class="p-2 w-20 text-center">
                 <div
-                  class="rounded-xl bg-gray-400 cursor-pointer"
+                  class="rounded-md bg-gray-400 cursor-pointer hover:bg-blue-300"
                   @click="removeMaterialFromList(i)"
                 >
                   Remove
@@ -185,24 +190,24 @@
         <button
           type="button"
           @click="toggleProductModal()"
-          class="px-6 py-2 ml-2 text-blue-800 border border-blue-600 rounded"
+          class="px-6 py-2 ml-2 text-white border bg-black rounded hover:bg-gray-300"
         >
           Odustani
         </button>
         <button
           v-if="modalStore.modal.item"
           type="button"
-          class="px-6 py-2 ml-2 bg-red-500 text-white border border-red-600 rounded"
+          class="px-6 py-2 ml-2 bg-red-500 text-white border border-red-600 rounded hover:bg-red-300"
           @click="deleteProduct()"
         >
           Obriši
         </button>
         <button
-          class="px-6 py-2 ml-2 float-right text-blue-100 bg-blue-600 rounded"
+          class="px-6 py-2 ml-2 float-right text-blue-100 bg-green-600 rounded hover:bg-green-300"
           type="button"
           @click="saveProduct"
         >
-          Spremi
+          Potvrdi
         </button>
       </div>
     </div>
@@ -225,6 +230,11 @@ import { useCategoryStore } from '/src/store/category';
 import { useModalStore } from '/src/store/modal';
 import { useRequestStore } from '/src/store/request';
 import { useNotificationStore } from '/src/store/notification';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faCirclePlus);
 
 const categoryStore = useCategoryStore();
 const productStore = useProductStore();
@@ -236,7 +246,7 @@ const name = modalStore.modal.item
   ? ref(modalStore.modal.item.name)
   : ref('');
 const price_sell = modalStore.modal.item
-  ? ref(modalStore.modal.item.price_sell.toFixed(2))
+  ? ref(modalStore.modal.item.price_sell)
   : ref('');
 const price_cost = modalStore.modal.item
   ? ref(modalStore.modal.item.price_cost)

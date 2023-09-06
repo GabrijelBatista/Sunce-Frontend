@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mb-5 bg-gray-300 w-full p-10 pt-5 rounded-xl overflow-hidden"
+    class="mb-5 bg-gray-300 w-full p-10 pt-5 rounded-md overflow-hidden"
   >
     <table class="text-left w-full">
       <thead class="flex w-full">
@@ -9,16 +9,28 @@
             <div class="inline-block">{{ category.name }}</div>
             <div class="inline-block mx-2">
               <div
-                class="bg-orange-400 rounded-xl p-1 cursor-pointer"
+                class="bg-white rounded-md p-1 cursor-pointer hover:bg-blue-300 font-medium text-xs"
                 @click="editCategory(category)"
               >
-                Uredi
+                <font-awesome-icon :icon="['fas', 'pen-to-square']" />
               </div>
             </div>
           </th>
-          <th class="p-3 w-1/6 text-center">Cijena</th>
-          <th class="p-3 w-1/6 text-center">Utrošak</th>
-          <th class="p-3 w-1/6 text-center">Razlika</th>
+          <th
+            class="p-3 w-1/6 text-center text-sm text-gray-700 font-semibold"
+          >
+            Cijena
+          </th>
+          <th
+            class="p-3 w-1/6 text-center text-sm text-gray-700 font-semibold"
+          >
+            Utrošak
+          </th>
+          <th
+            class="p-3 w-1/6 text-center text-sm text-gray-700 font-semibold"
+          >
+            Razlika
+          </th>
           <th class="p-2 w-20"></th>
         </tr>
       </thead>
@@ -27,29 +39,29 @@
         class="bg-grey-light flex flex-col items-center overflow-y-auto w-full max-h-56 overscroll-contain"
       >
         <tr
-          class="flex w-full mb-1 bg-white rounded-xl"
+          class="flex w-full mb-1 bg-white rounded-md items-center"
           :key="product.id"
           v-for="product in category.products"
         >
-          <td class="p-2 w-1/2">{{ product.name }}</td>
+          <td class="p-2 w-1/2 break-words">{{ product.name }}</td>
           <td class="p-2 w-1/6 text-center">
-            <div class="rounded-xl bg-gray-400">
+            <div class="rounded-md bg-gray-400">
               {{ formatNumber(product.price_sell) }} KM
             </div>
           </td>
           <td class="p-2 w-1/6 text-center">
-            <div class="rounded-xl bg-red-400">
+            <div class="rounded-md bg-red-400">
               {{ formatNumber(product.price_cost) }} KM
             </div>
           </td>
           <td class="p-2 w-1/6 text-center">
-            <div class="rounded-xl bg-green-400">
+            <div class="rounded-md bg-green-400">
               {{ formatNumber(product.price_diff) }} KM
             </div>
           </td>
-          <td class="p-2 w-20 text-center">
+          <td class="p-2 w-10 text-center">
             <div
-              class="rounded-xl bg-orange-400 cursor-pointer"
+              class="rounded-md bg-gray-300 cursor-pointer hover:bg-blue-300 font-medium"
               @click="
                 editProduct(product, {
                   id: category.id,
@@ -58,7 +70,7 @@
                 })
               "
             >
-              Uredi
+              <font-awesome-icon :icon="['fas', 'pen-to-square']" />
             </div>
           </td>
         </tr>
@@ -82,6 +94,11 @@ import { useProductStore } from '/src/store/product';
 import { useRequestStore } from '/src/store/request';
 import { useModalStore } from '/src/store/modal';
 import Spinner from './Spinner.vue';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faPenToSquare);
 
 const productStore = useProductStore();
 const modalStore = useModalStore();

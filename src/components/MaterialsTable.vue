@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mb-5 bg-gray-300 w-full p-10 pt-5 rounded-xl overflow-hidden"
+    class="mb-5 bg-gray-300 w-full p-10 pt-5 rounded-md overflow-hidden"
   >
     <table class="text-left w-full">
       <thead class="flex w-full">
@@ -9,15 +9,15 @@
             <div class="inline-block">{{ category.name }}</div>
             <div class="inline-block mx-2">
               <div
-                class="bg-orange-400 rounded-xl p-1 cursor-pointer"
+                class="bg-white rounded-md p-1 cursor-pointer hover:bg-blue-300 font-medium text-xs"
                 @click="editCategory(category)"
               >
-                Uredi
+                <font-awesome-icon :icon="['fas', 'pen-to-square']" />
               </div>
             </div>
           </th>
-          <th class="p-3 w-1/3 pr-10 text-center">Cijena</th>
-          <th class="p-2 w-20"></th>
+          <th class="p-3 w-3/5 pr-10 text-center">Cijena</th>
+          <th class="p-2 w-10"></th>
         </tr>
       </thead>
       <tbody
@@ -25,21 +25,21 @@
         :id="'category-' + category.id"
       >
         <tr
-          class="flex w-full mb-1 bg-white rounded-xl"
+          class="flex w-full mb-1 bg-white rounded-md items-center"
           :key="material.id"
           v-for="material in category.materials"
         >
-          <td class="p-2 w-1/2">{{ material.name }}</td>
-          <td class="p-2 w-1/3 text-center">
-            <div class="rounded-xl bg-gray-400">
+          <td class="p-2 w-1/2 break-words">{{ material.name }}</td>
+          <td class="p-2 w-3/5 text-center">
+            <div class="rounded-md bg-gray-400">
               {{ formatNumber(material.price_per_uom) }} KM/{{
                 material.uom
               }}
             </div>
           </td>
-          <td class="p-2 w-20 text-center">
+          <td class="p-2 w-10 text-center">
             <div
-              class="rounded-xl bg-orange-400 cursor-pointer"
+              class="rounded-md bg-gray-300 cursor-pointer hover:bg-blue-300 font-medium"
               @click="
                 editMaterial(material, {
                   id: category.id,
@@ -48,7 +48,7 @@
                 })
               "
             >
-              Uredi
+              <font-awesome-icon :icon="['fas', 'pen-to-square']" />
             </div>
           </td>
         </tr>
@@ -72,6 +72,11 @@ import { useMaterialStore } from '/src/store/material';
 import { useRequestStore } from '/src/store/request';
 import { useModalStore } from '/src/store/modal';
 import Spinner from './Spinner.vue';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faPenToSquare);
 
 const materialStore = useMaterialStore();
 const requestStore = useRequestStore();

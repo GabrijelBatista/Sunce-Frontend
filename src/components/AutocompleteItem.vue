@@ -3,7 +3,7 @@
     <input
       autocomplete="off"
       type="text"
-      class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
+      class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-md focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
       name="term"
       @input="getItems"
       @keyup.delete="getItems"
@@ -20,7 +20,7 @@
         @click="selectItem(item)"
         :class="[
           'hover:bg-blue-100 hover:text-blue-800',
-          'w-full list-none text-left py-2 px-3 cursor-pointer',
+          'w-full list-none text-left py-2 px-3 cursor-pointer hover:bg-blue-300',
         ]"
       >
         {{ item.name }}

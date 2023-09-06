@@ -1,7 +1,7 @@
 <template>
   <nav class="bg-primary-950 border-primary-600">
     <div
-      class="max-w-4xl flex flex-wrap items-center justify-between mx-auto p-2"
+      class="max-w-6xl flex flex-wrap items-center justify-between mx-auto p-2"
     >
       <div class="flex items-center">
         <img
@@ -17,7 +17,7 @@
         <div class="relative">
           <input
             type="search"
-            class="block w-full p-2 text-sm text-gray-900 rounded-3xl bg-gray-50 focus:ring-white focus:border-white"
+            class="block w-full p-2 text-sm text-gray-900 rounded-md bg-gray-50 focus:ring-white focus:border-white"
             placeholder="Pretraga"
             v-model="term"
             @input="getItems"
@@ -25,21 +25,21 @@
           />
           <button
             type="submit"
-            class="absolute right-2.5 bottom-2.5 rounded-lg text-sm"
+            class="absolute right-2.5 bottom-2.5 rounded-md text-sm hover:bg-gray-300"
           >
             <i class="fa fa-search"></i>
           </button>
         </div>
         <RouterLink to="/products">
           <button
-            class="rounded-3xl text-white border border-white w-28 p-1 m-2"
+            class="rounded-md text-white border border-white w-28 p-1 m-2 hover:bg-gray-300"
           >
             Jelovnik
           </button>
         </RouterLink>
         <RouterLink to="/materials">
           <button
-            class="rounded-3xl text-white border border-white w-28 p-1 m-2"
+            class="rounded-md text-white border border-white w-28 p-1 m-2 hover:bg-gray-300"
           >
             Sastojci
           </button>
@@ -49,7 +49,7 @@
           v-click-outside="() => (dropdown = false)"
         >
           <button
-            class="flex border-white border rounded-3xl items-center whitespace-nowrap bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] motion-reduce:transition-none"
+            class="flex border-white border rounded-md items-center whitespace-nowrap bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-gray-300 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] motion-reduce:transition-none"
             type="button"
             id="dropdownMenuButton1"
             aria-expanded="false"
@@ -73,7 +73,7 @@
           </button>
           <ul
             v-if="dropdown"
-            class="absolute z-[1000] float-left m-0 min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg"
+            class="absolute z-[1000] float-left m-0 min-w-max list-none overflow-hidden rounded-md border-none bg-white bg-clip-padding text-left text-base shadow-lg"
             aria-labelledby="dropdownMenuButton1"
           >
             <li>
@@ -87,7 +87,7 @@
             </li>
             <li>
               <button
-                class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400"
+                class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-red-600 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400"
                 type="button"
                 @click="logout()"
               >

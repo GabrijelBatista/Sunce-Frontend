@@ -23,7 +23,7 @@
       class="bg-gray-400 py-20 max-h-screen overflow-y-auto"
     >
       <div
-        class="relative overflow-y-hidden overflow-x-auto max-w-4xl flex flex-wrap items-center justify-between mx-auto"
+        class="relative overflow-y-hidden overflow-x-auto max-w-6xl flex flex-wrap items-center justify-between mx-auto"
       >
         <RouterView class="mb-30" />
       </div>
@@ -41,7 +41,7 @@
       v-if="
         current_route === 'Products' || current_route === 'Materials'
       "
-      class="fixed bottom-0 left-0 right-0 mr-auto ml-auto min overflow-x-auto max-w-4xl rounded-t-md"
+      class="fixed bottom-0 left-0 right-0 mr-auto ml-auto min overflow-x-auto max-w-6xl rounded-t-md"
       :current_route="current_route"
     />
   </div>
@@ -120,6 +120,8 @@ const current_route = computed({
 
 <style>
 a.router-link-active button {
-  background-color: blue;
+  border: 2px solid green;
+  background-color: white;
+  color: black;
 }
 </style>

@@ -1,17 +1,25 @@
 <template>
   <div class="bg-primary-950 border-primary-600">
-    <div class="max-w-4xl mx-auto p-2 float-right">
+    <div class="max-w-6xl mx-auto p-2 float-right">
       <button
-        class="rounded-3xl text-white border border-white w-38 p-2 m-2"
+        class="rounded-md text-white border border-white w-48 p-2 m-2 hover:bg-gray-300"
         @click="toggleCategoryModal()"
       >
-        Dodaj kategoriju
+        <font-awesome-icon
+          :icon="['fas', 'circle-plus']"
+          class="float-left mt-1"
+        />
+        <div class="float-right">Dodaj kategoriju</div>
       </button>
       <button
-        class="rounded-3xl text-white border border-white w-38 p-2 m-2"
+        class="rounded-md text-white border border-white w-48 p-2 m-2 hover:bg-gray-300"
         @click="toggleItemModal()"
       >
-        Dodaj {{ info.product_name }}
+        <font-awesome-icon
+          :icon="['fas', 'circle-plus']"
+          class="float-left align-middle mt-1"
+        />
+        <div class="float-right">Dodaj {{ info.product_name }}</div>
       </button>
     </div>
   </div>
@@ -20,6 +28,11 @@
 <script setup>
 import { useModalStore } from '/src/store/modal';
 import { ref, computed } from 'vue';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faCirclePlus);
 
 const props = defineProps({
   current_route: String,

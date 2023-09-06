@@ -4,11 +4,11 @@
   >
     <div class="max-w-4xl w-full p-6 bg-white rounded-md shadow-xl">
       <div class="flex items-center justify-between">
-        <h3 class="text-2xl">Sastojak</h3>
+        <h3 class="text-2xl font-bold">Sastojak</h3>
         <svg
           @click="toggleMaterialModal(false)"
           xmlns="http://www.w3.org/2000/svg"
-          class="w-8 h-8 text-red-900 cursor-pointer"
+          class="w-8 h-8 text-red-900 cursor-pointer hover:text-red-300"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -23,8 +23,8 @@
       </div>
       <form @submit.prevent="saveMaterial">
         <div class="mt-4">
-          <div class="mb-4 text-sm flex">
-            <div class="m-2">
+          <div class="mb-4 text-sm flex justify-center">
+            <div class="m-2 w-full">
               <label
                 class="block mb-2 text-sm font-medium text-gray-900"
                 for="name"
@@ -37,10 +37,10 @@
                 name="name"
                 max="20"
                 v-model="name"
-                class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
+                class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-md focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
               />
             </div>
-            <div class="m-2">
+            <div class="m-2 w-full">
               <label
                 class="block mb-2 text-sm font-medium text-gray-900"
                 for="name"
@@ -51,8 +51,8 @@
               />
             </div>
           </div>
-          <div class="mb-4 text-sm flex">
-            <div class="m-2">
+          <div class="mb-4 text-sm flex justify-center">
+            <div class="m-2 w-full">
               <label
                 class="block mb-2 text-sm font-medium text-gray-900"
                 for="price_per_uom"
@@ -67,17 +67,17 @@
                 step=".01"
                 v-model="price_per_uom"
                 @change="price_per_uom = formatNumber(price_per_uom)"
-                class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
+                class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-md focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
               />
             </div>
-            <div class="m-2">
+            <div class="m-2 w-full">
               <label
                 class="block mb-2 text-sm font-medium text-gray-900"
                 for="uom"
                 >Mjerna jedinica</label
               >
               <select
-                class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
+                class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-md focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
                 name="uom"
                 v-model="uom"
                 required
@@ -104,15 +104,15 @@
                 id="products-body"
               >
                 <tr
-                  class="flex w-full mb-1 h-10 bg-white rounded-xl"
+                  class="flex w-full mb-1 bg-white rounded-md items-center"
                   :key="product.product.id"
                   v-for="product in material_products"
                 >
-                  <td class="p-2 w-1/2">
+                  <td class="p-2 w-1/3 break-words">
                     {{ product.product.name }}
                   </td>
-                  <td class="p-2 w-1/4 text-center">
-                    <div class="rounded-xl bg-gray-400">
+                  <td class="p-2 w-1/6 text-center">
+                    <div class="rounded-md bg-gray-400">
                       {{ product.material_quantity }}
                       {{ uom }}
                       ({{
@@ -123,14 +123,14 @@
                       KM)
                     </div>
                   </td>
-                  <td class="p-2 w-1/4 text-center">
-                    <div class="rounded-xl bg-gray-400">
+                  <td class="p-2 w-1/6 text-center">
+                    <div class="rounded-md bg-gray-400">
                       {{ formatNumber(product.product.price_sell) }}
                       KM
                     </div>
                   </td>
-                  <td class="p-2 w-1/4 text-center">
-                    <div class="rounded-xl bg-red-400">
+                  <td class="p-2 w-1/6 text-center">
+                    <div class="rounded-md bg-red-400">
                       {{
                         calculatePriceCost(
                           product.product.price_cost,
@@ -140,8 +140,8 @@
                       KM
                     </div>
                   </td>
-                  <td class="p-2 w-1/4 text-center">
-                    <div class="rounded-xl bg-green-400">
+                  <td class="p-2 w-1/6 text-center">
+                    <div class="rounded-md bg-green-400">
                       {{
                         calculatePriceDiff(
                           product.product.price_sell,
@@ -165,7 +165,7 @@
           <button
             type="button"
             @click="toggleMaterialModal()"
-            class="px-6 py-2 ml-2 text-blue-800 border border-blue-600 rounded"
+            class="px-6 py-2 ml-2 text-white border bg-black rounded hover:bg-gray-300"
           >
             Odustani
           </button>
@@ -173,15 +173,15 @@
             v-if="modalStore.modal.item"
             type="button"
             @click="deleteMaterial()"
-            class="px-6 py-2 ml-2 text-white border border-red-600 bg-red-600 rounded"
+            class="px-6 py-2 ml-2 text-white border border-red-600 bg-red-600 rounded hover:bg-red-300"
           >
             Obriši
           </button>
           <button
-            class="px-6 py-2 ml-2 text-blue-100 bg-blue-600 rounded float-right"
+            class="px-6 py-2 ml-2 text-blue-100 bg-green-600 rounded float-right hover:bg-green-300"
             type="submit"
           >
-            Spremi
+            Potvrdi
           </button>
         </div>
       </form>
@@ -313,9 +313,9 @@ onBeforeUnmount(() => {
 const handleScroll = () => {
   const body = document.getElementById('products-body');
   if (body.scrollTop + body.offsetHeight >= body.scrollHeight) {
-    productStore.getProductMaterials(
+    materialStore.getMaterialProducts(
       modalStore.modal.item.id,
-      productStore.materials_current_page + 1
+      materialStore.materials_current_page + 1
     );
   }
 };
