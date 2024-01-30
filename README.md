@@ -1,7 +1,7 @@
-# Vue 3 + Vite
+### Instalation steps
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+1. npm install
 
-## Recommended IDE Setup
+2. change VITE_API_URL variable in the .env file to the URL of your API
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+3. run the npm command for starting the app (available commands, depending on what you need: npm run dev, npm run build, npm run preview)
