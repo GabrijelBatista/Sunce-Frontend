@@ -1,8 +1,8 @@
 <template>
   <div class="bg-primary-950 border-primary-600">
-    <div class="max-w-6xl mx-auto p-2 float-right">
+    <div class="max-w-6xl mx-auto p-2 sm:float-right text-center">
       <button
-        class="rounded-md text-white border border-white w-48 p-2 m-2 hover:bg-gray-300"
+        class="rounded-md text-white border border-white w-40 p-2 m-2 hover:bg-gray-300"
         @click="toggleCategoryModal()"
       >
         <font-awesome-icon
@@ -12,7 +12,7 @@
         <div class="float-right">Dodaj kategoriju</div>
       </button>
       <button
-        class="rounded-md text-white border border-white w-48 p-2 m-2 hover:bg-gray-300"
+        class="rounded-md text-white border border-white w-40 p-2 m-2 hover:bg-gray-300"
         @click="toggleItemModal()"
       >
         <font-awesome-icon
@@ -26,11 +26,11 @@
 </template>
 
 <script setup>
-import { useModalStore } from '/src/store/modal';
-import { ref, computed } from 'vue';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { useModalStore } from "/src/store/modal";
+import { ref, computed } from "vue";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faCirclePlus);
 
@@ -41,10 +41,10 @@ const props = defineProps({
 const modalStore = useModalStore();
 
 const footer_info = ref({
-  product_name: '',
-  csv_endpoint: '',
-  add_product_modal: '',
-  add_category_modal: '',
+  product_name: "",
+  csv_endpoint: "",
+  add_product_modal: "",
+  add_category_modal: "",
 });
 
 const current_route = computed({
@@ -55,26 +55,26 @@ const current_route = computed({
 
 const info = computed({
   get() {
-    if (current_route.value === 'Products') {
+    if (current_route.value === "Products") {
       return (footer_info.value = {
-        product_name: 'jelo',
-        csv_endpoint: '#',
-        add_product_modal: 'add-product',
-        add_category_modal: 'add-product-category',
+        product_name: "jelo",
+        csv_endpoint: "#",
+        add_product_modal: "add-product",
+        add_category_modal: "add-product-category",
       });
     } else {
       return (footer_info.value = {
-        product_name: 'sastojak',
-        csv_endpoint: '#',
-        add_product_modal: 'add-material',
-        add_category_modal: 'add-material-category',
+        product_name: "sastojak",
+        csv_endpoint: "#",
+        add_product_modal: "add-material",
+        add_category_modal: "add-material-category",
       });
     }
   },
 });
 
 const toggleCategoryModal = () => {
-  modalStore.toggleModal({ name: 'Categories' });
+  modalStore.toggleModal({ name: "Categories" });
 };
 const toggleItemModal = () => {
   modalStore.toggleModal({ name: current_route });

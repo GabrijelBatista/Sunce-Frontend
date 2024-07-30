@@ -11,64 +11,42 @@
     <div class="w-full bg-white rounded-md shadow md:mt-0 sm:max-w-md xl:p-0">
       <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
         <h1
-          class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl"
+          class="font-bold bg-green-500 leading-tight tracking-tight text-white text-center p-2"
         >
-          PRIJAVA
+          Verifikacijski kod je poslan na Vašu email adresu.
         </h1>
-        <form class="space-y-4 md:space-y-6" @submit.prevent="login">
+        <form class="space-y-4 md:space-y-6" @submit.prevent="verifyEmail()">
           <div>
             <label
-              for="email"
+              for="code"
               class="block mb-2 text-sm font-medium text-gray-900"
-              >Email</label
+              >Verifikacijski kod</label
             >
             <input
-              type="email"
-              name="email"
-              id="email"
+              type="code"
+              name="code"
+              autocomplete="off"
+              id="code"
               class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-md focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
-              placeholder="ime@domena.com"
+              placeholder="123456"
               required
-              v-model="email"
-            />
-          </div>
-          <div>
-            <label
-              for="password"
-              class="block mb-2 text-sm font-medium text-gray-900"
-              >Lozinka</label
-            >
-            <input
-              type="password"
-              name="password"
-              id="password"
-              placeholder="••••••••"
-              class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-md focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
-              required
-              v-model="password"
+              v-model="code"
             />
           </div>
           <div class="flex items-center justify-between">
-            <RouterLink
-              to="/forgot-password"
-              class="text-sm font-medium text-primary-950 hover:underline"
-              >Zaboravili ste lozinku?</RouterLink
+            <span
+              @click="sendVerificationCode()"
+              class="text-sm font-medium text-primary-950 hover:underline cursor-pointer"
+              >Pošalji novi verifikacijski kod.</span
             >
           </div>
           <button
             type="submit"
+            :disabled="userStore.waiting_for_response"
             class="w-full text-white bg-green-600 hover:bg-green-300 focus:ring-4 focus:outline-none focus:ring-primary-950 font-medium rounded-md text-sm px-5 py-2.5 text-center"
           >
-            PRIJAVI SE
+            POTVRDI
           </button>
-          <p class="text-sm font-light text-gray-500">
-            Još nemate račun?
-            <RouterLink
-              to="/register"
-              class="font-medium text-primary-950 hover:underline"
-              >Registujte se!
-            </RouterLink>
-          </p>
         </form>
       </div>
     </div>
@@ -80,30 +58,34 @@ import { ref } from "vue";
 import axios from "axios";
 import { useUserStore } from "/src/store/user";
 import { useNotificationStore } from "/src/store/notification";
-import { RouterLink, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
-const email = ref("");
-const password = ref("");
+const code = ref("");
 
 const userStore = useUserStore();
 const notificationStore = useNotificationStore();
 const router = useRouter();
 
-const login = () =>
+const sendVerificationCode = () => {
+  if (!userStore.waiting_for_response) {
+    userStore.sendVerificationCode();
+  }
+};
+
+const verifyEmail = () =>
   axios
-    .post("/auth/login", {
-      email: email.value,
-      password: password.value,
+    .put("/auth/verify-email", {
+      code: code.value,
     })
     .then((response) => {
       userStore.addToken(response.data.token);
-      userStore.setVerified(response.data.verified);
+      userStore.setVerified(true);
       router.push({ name: "Products" });
     })
     .catch(() => {
       notificationStore.addNotification({
         type: "error",
-        message: "Unijeli ste neodgovarajuće kredencijale.",
+        message: "Došlo je do pogreške.",
       });
     });
 </script>

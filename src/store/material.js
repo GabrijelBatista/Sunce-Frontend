@@ -1,18 +1,18 @@
-import { defineStore } from 'pinia';
-import axios from 'axios';
-import { useNotificationStore } from '/src/store/notification';
-import { useRequestStore } from '/src/store/request';
-import { useModalStore } from '/src/store/modal';
-import { reactive } from 'vue';
+import { defineStore } from "pinia";
+import axios from "axios";
+import { useNotificationStore } from "/src/store/notification";
+import { useRequestStore } from "/src/store/request";
+import { useModalStore } from "/src/store/modal";
+import { reactive } from "vue";
 
-export const useMaterialStore = defineStore('material', {
+export const useMaterialStore = defineStore("material", {
   state: () => ({
     materials: reactive([]),
     material_products: reactive([]),
     categories_current_page: 1,
     categories_last_page: 1,
-    productss_current_page: 1,
-    productss_last_page: 1,
+    products_current_page: 1,
+    products_last_page: 1,
     term: null,
   }),
   actions: {
@@ -26,49 +26,20 @@ export const useMaterialStore = defineStore('material', {
         if (!requestStore.in_progress.getMaterials) {
           const endpoint =
             this.term !== null
-              ? '/category/get-material-categories?page=' +
+              ? "/category/get-material-categories?page=" +
                 page +
-                '&term=' +
+                "&term=" +
                 this.term
-              : '/category/get-material-categories?page=' + page;
-          requestStore.updateInProgress('getMaterials', true);
+              : "/category/get-material-categories?page=" + page;
+          requestStore.updateInProgress("getMaterials", true);
           axios.get(endpoint).then((response) => {
-            let items_processed = 0;
-            if (!response.data.data[0]) {
-              this.materials = [];
-            } else {
-              response.data.data.forEach((el) => {
-                const endpoint2 =
-                  this.term !== null
-                    ? '/category/' +
-                      el.id +
-                      '/get-category-materials?term=' +
-                      this.term
-                    : '/category/' +
-                      el.id +
-                      '/get-category-materials';
-                axios.get(endpoint2).then((res) => {
-                  el.materials = res.data.data;
-                  items_processed++;
-                  if (items_processed === response.data.data.length) {
-                    callback();
-                  }
-                });
-              });
-            }
-            const callback = () => {
-              if (page > 1) {
-                this.materials = this.materials.concat(
-                  response.data.data
-                );
-              } else {
-                this.materials = response.data.data;
-              }
-              this.categories_current_page =
-                response.data.current_page;
-              this.categories_last_page = response.data.last_page;
-            };
-            requestStore.updateInProgress('getMaterials', false);
+            this.materials =
+              this.term !== null
+                ? response.data.data
+                : this.materials.concat(response.data.data);
+            this.categories_current_page = response.data.current_page;
+            this.categories_last_page = response.data.last_page;
+            requestStore.updateInProgress("getMaterials", false);
           });
         }
       }
@@ -78,17 +49,17 @@ export const useMaterialStore = defineStore('material', {
       const requestStore = useRequestStore();
       const modalStore = useModalStore();
       if (!requestStore.in_progress.saveMaterial) {
-        requestStore.updateInProgress('saveMaterial', true);
-        let method = 'post';
-        let path = 'add';
+        requestStore.updateInProgress("saveMaterial", true);
+        let method = "post";
+        let path = "add";
         if (material.id) {
-          method = 'put';
-          path = 'edit';
+          method = "put";
+          path = "edit";
         }
 
         axios({
           method: method,
-          url: '/material/' + path,
+          url: "/material/" + path,
           data: material,
         })
           .then((response) => {
@@ -96,145 +67,82 @@ export const useMaterialStore = defineStore('material', {
               (el) => el.id === material.category_id
             );
             if (category_index > -1) {
-              if (path === 'add') {
-                this.materials[category_index].materials.push(
-                  material
-                );
+              if (path === "add") {
+                this.materials[category_index].materials.push(material);
               }
-              if (path === 'edit') {
+              if (path === "edit") {
                 const material_index = this.materials[
                   category_index
                 ].materials.findIndex((el) => el.id === material.id);
-                this.materials[category_index].materials[
-                  material_index
-                ] = material;
+                this.materials[category_index].materials[material_index] =
+                  material;
               }
-            } else if (path === 'add') {
+            } else if (path === "add") {
               category.materials = [material];
               this.materials.push(category);
             }
             notificationStore.addNotification({
-              type: 'success',
+              type: "success",
               message: response.data.message,
             });
-            requestStore.updateInProgress('saveMaterial', false);
+            requestStore.updateInProgress("saveMaterial", false);
             modalStore.toggleModal();
             this.material_products = [];
           })
-          .catch((error) => {
+          .catch(() => {
             notificationStore.addNotification({
-              type: 'error',
-              message: error.response.data.message,
+              type: "error",
+              message: "Došlo je do pogreške, sastojak nije dodan.",
             });
-            requestStore.updateInProgress('saveMaterial', false);
+            requestStore.updateInProgress("saveMaterial", false);
           });
       }
     },
-    getCategoryMaterials(id) {
-      const category_index = this.materials.findIndex(
-        (el) => el.id === id
-      );
-      if (category_index > -1) {
-        let page = 2;
-        if (
-          this.materials[category_index].last_page &&
-          this.materials[category_index].current_page <
-            this.materials[category_index].last_page
-        ) {
-          page = this.materials[category_index].current_page + 1;
-        }
-        if (
-          !this.materials[category_index].last_page ||
-          this.materials[category_index].current_page <
-            this.materials[category_index].last_page
-        ) {
-          const requestStore = useRequestStore();
-          if (!requestStore.in_progress.getCategoryMaterials) {
-            requestStore.updateTableScroll(id);
-            requestStore.updateInProgress(
-              'getCategoryMaterials',
-              true
-            );
-            const endpoint =
-              this.term !== null
-                ? '/category/' +
-                  id +
-                  '/get-category-materials?page=' +
-                  page +
-                  '&term=' +
-                  this.term
-                : '/category/' +
-                  id +
-                  '/get-category-materials?page=' +
-                  page;
-            axios.get(endpoint).then((response) => {
-              this.materials[category_index].materials =
-                this.materials[category_index].materials.concat(
-                  response.data.data
-                );
-              this.materials[category_index].current_page =
-                response.data.current_page;
-              this.materials[category_index].last_page =
-                response.data.last_page;
-              requestStore.updateInProgress(
-                'getCategoryMaterials',
-                false
-              );
-              requestStore.updateTableScroll(0);
-            });
-          }
-        }
-      }
-    },
     getMaterialProducts(id, page = 1) {
-      if (
-        !this.products_last_page ||
-        page <= this.products_last_page
-      ) {
+      if (!this.products_last_page || page <= this.products_last_page) {
         const requestStore = useRequestStore();
         if (!requestStore.in_progress.getMaterialProducts) {
-          requestStore.updateInProgress('getMaterialProducts', true);
+          requestStore.updateInProgress("getMaterialProducts", true);
           axios
-            .get('/material/' + id + '/get-products?page=' + page)
+            .get("/material/" + id + "/get-products?page=" + page)
             .then((response) => {
               if (page === 1) {
                 this.material_products = response.data.data;
               } else {
-                this.material_products =
-                  this.material_products.concat(response.data.data);
+                this.material_products = this.material_products.concat(
+                  response.data.data
+                );
               }
               this.products_current_page = response.data.current_page;
               this.products_last_page = response.data.last_page;
-              requestStore.updateInProgress(
-                'getMaterialProducts',
-                false
-              );
+              requestStore.updateInProgress("getMaterialProducts", false);
             });
         }
       }
     },
+    addCategory(category) {
+      this.materials.push(category);
+    },
     deleteMaterial(id) {
       const confirmed = confirm(
-        'Da li Ste sigurni da želite izbrisati ovaj sastojak? Brisanje ovog sastojka podrazumijeva i izbacivanje ovog sastojka iz svih jela.'
+        "Da li Ste sigurni da želite izbrisati ovaj sastojak? Brisanje ovog sastojka podrazumijeva i izbacivanje ovog sastojka iz svih jela."
       );
       if (confirmed) {
         const modalStore = useModalStore();
         const requestStore = useRequestStore();
         const notificationStore = useNotificationStore();
         if (!requestStore.in_progress.deleteMaterial) {
-          requestStore.updateInProgress('deleteMaterial', true);
+          requestStore.updateInProgress("deleteMaterial", true);
           axios
-            .delete('/material/delete/' + id)
+            .delete("/material/delete/" + id)
             .then((response) => {
-              const category_index = this.materials.findIndex(
-                (el) => {
-                  return (
-                    el.materials.findIndex((el2) => {
-                      return el2.id === id;
-                    }) !== -1
-                  );
-                }
-              );
+              const category_index = this.materials.findIndex((el) => {
+                return (
+                  el.materials.findIndex((el2) => {
+                    return el2.id === id;
+                  }) !== -1
+                );
+              });
               if (category_index > -1) {
                 const material_index = this.materials[
                   category_index
@@ -249,18 +157,18 @@ export const useMaterialStore = defineStore('material', {
                 }
               }
               notificationStore.addNotification({
-                type: 'success',
+                type: "success",
                 message: response.data.message,
               });
-              requestStore.updateInProgress('deleteMaterial', false);
+              requestStore.updateInProgress("deleteMaterial", false);
               modalStore.toggleModal();
             })
-            .catch((error) => {
+            .catch(() => {
               notificationStore.addNotification({
-                type: 'error',
-                message: error.response.data.message,
+                type: "error",
+                message: "Došlo je do pogreške, sastojak nije obrisan.",
               });
-              requestStore.updateInProgress('deleteMaterial', false);
+              requestStore.updateInProgress("deleteMaterial", false);
             });
         }
       }

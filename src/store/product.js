@@ -1,11 +1,11 @@
-import { defineStore } from 'pinia';
-import axios from 'axios';
-import { useNotificationStore } from '/src/store/notification';
-import { useRequestStore } from '/src/store/request';
-import { useModalStore } from '/src/store/modal';
-import { reactive } from 'vue';
+import { defineStore } from "pinia";
+import axios from "axios";
+import { useNotificationStore } from "/src/store/notification";
+import { useRequestStore } from "/src/store/request";
+import { useModalStore } from "/src/store/modal";
+import { reactive } from "vue";
 
-export const useProductStore = defineStore('product', {
+export const useProductStore = defineStore("product", {
   state: () => ({
     products: reactive([]),
     selected_items: reactive([]),
@@ -28,49 +28,22 @@ export const useProductStore = defineStore('product', {
         if (!requestStore.in_progress.getProducts) {
           const endpoint =
             this.term !== null
-              ? '/category/get-product-categories?page=' +
+              ? "/category/get-product-categories?page=" +
                 page +
-                '&term=' +
+                "&term=" +
                 this.term
-              : '/category/get-product-categories?page=' + page;
-          requestStore.updateInProgress('getProducts', true);
+              : "/category/get-product-categories?page=" + page;
+          requestStore.updateInProgress("getProducts", true);
           axios.get(endpoint).then((response) => {
-            let items_processed = 0;
-            if (!response.data.data[0]) {
-              this.materials = [];
-            } else {
-              response.data.data.forEach((el) => {
-                const endpoint2 =
-                  this.term !== null
-                    ? '/category/' +
-                      el.id +
-                      '/get-category-products?term=' +
-                      this.term
-                    : '/category/' + el.id + '/get-category-products';
-                axios.get(endpoint2).then((res) => {
-                  el.products = res.data.data;
-                  items_processed++;
-                  if (items_processed === response.data.data.length) {
-                    callback();
-                  }
-                });
-              });
-            }
-            const callback = () => {
-              if (page > 1) {
-                this.products = this.products.concat(
-                  response.data.data
-                );
-              } else {
-                this.products = response.data.data;
-              }
-              this.categories_current_page =
-                response.data.current_page;
-              this.categories_last_page = response.data.last_page;
-            };
-            requestStore.updateInProgress('getProducts', false);
+            this.products =
+              this.term !== null
+                ? response.data.data
+                : this.products.concat(response.data.data);
+            this.categories_current_page = response.data.current_page;
+            this.categories_last_page = response.data.last_page;
           });
         }
+        requestStore.updateInProgress("getProducts", false);
       }
     },
     getItems(endpoint) {
@@ -84,12 +57,12 @@ export const useProductStore = defineStore('product', {
       const requestStore = useRequestStore();
       const modalStore = useModalStore();
       if (!requestStore.in_progress.saveProduct) {
-        requestStore.updateInProgress('saveProduct', true);
-        let method = 'post';
-        let path = 'add';
+        requestStore.updateInProgress("saveProduct", true);
+        let method = "post";
+        let path = "add";
         if (product.id) {
-          method = 'put';
-          path = 'edit';
+          method = "put";
+          path = "edit";
         }
 
         let materials = [];
@@ -104,7 +77,7 @@ export const useProductStore = defineStore('product', {
 
         axios({
           method: method,
-          url: '/product/' + path,
+          url: "/product/" + path,
           data: product,
         })
           .then((response) => {
@@ -112,36 +85,35 @@ export const useProductStore = defineStore('product', {
               (el) => el.id === product.category_id
             );
             if (category_index > -1) {
-              if (path === 'add') {
+              if (path === "add") {
                 this.products[category_index].products.push(
                   response.data.product
                 );
               }
-              if (path === 'edit') {
+              if (path === "edit") {
                 const product_index = this.products[
                   category_index
                 ].products.findIndex((el) => el.id === product.id);
-                this.products[category_index].products[
-                  product_index
-                ] = response.data.product;
+                this.products[category_index].products[product_index] =
+                  response.data.product;
               }
-            } else if (path === 'add') {
-              category.products = [product];
+            } else if (path === "add") {
+              category.products = [response.data.product];
               this.products.push(category);
             }
             notificationStore.addNotification({
-              type: 'success',
+              type: "success",
               message: response.data.message,
             });
-            requestStore.updateInProgress('saveProduct', false);
+            requestStore.updateInProgress("saveProduct", false);
             modalStore.toggleModal();
           })
-          .catch((error) => {
+          .catch(() => {
             notificationStore.addNotification({
-              type: 'error',
-              message: error.response.data.message,
+              type: "error",
+              message: "Došlo je do pogreške, jelo nije dodano.",
             });
-            requestStore.updateInProgress('saveProduct', false);
+            requestStore.updateInProgress("saveProduct", false);
           });
       }
     },
@@ -153,74 +125,16 @@ export const useProductStore = defineStore('product', {
       this.selected_items.push(item);
       this.selected_item = null;
     },
-    getCategoryProducts(id) {
-      const category_index = this.products.findIndex(
-        (el) => el.id === id
-      );
-      if (category_index > -1) {
-        let page = 2;
-        if (
-          this.products[category_index].last_page &&
-          this.products[category_index].current_page <
-            this.products[category_index].last_page
-        ) {
-          page = this.products[category_index].current_page + 1;
-        }
-        if (
-          !this.products[category_index].last_page ||
-          this.products[category_index].current_page <
-            this.products[category_index].last_page
-        ) {
-          const requestStore = useRequestStore();
-          if (!requestStore.in_progress.getCategoryProducts) {
-            requestStore.updateTableScroll(id);
-            requestStore.updateInProgress(
-              'getCategoryProducts',
-              true
-            );
-            const endpoint =
-              this.term !== null
-                ? '/category/' +
-                  id +
-                  '/get-category-products?page=' +
-                  page +
-                  '&term=' +
-                  this.term
-                : '/category/' +
-                  id +
-                  '/get-category-products?page=' +
-                  page;
-            axios.get(endpoint).then((response) => {
-              this.products[category_index].products = this.products[
-                category_index
-              ].products.concat(response.data.data);
-              this.products[category_index].current_page =
-                response.data.current_page;
-              this.products[category_index].last_page =
-                response.data.last_page;
-              requestStore.updateInProgress(
-                'getCategoryProducts',
-                false
-              );
-              requestStore.updateTableScroll(0);
-            });
-          }
-        }
-      }
-    },
     removeItemFromList(i) {
       this.selected_items.splice(i, 1);
     },
     getProductMaterials(id, page = 1) {
-      if (
-        !this.materials_last_page ||
-        page <= this.materials_last_page
-      ) {
+      if (!this.materials_last_page || page <= this.materials_last_page) {
         const requestStore = useRequestStore();
         if (!requestStore.in_progress.getProductMaterials) {
-          requestStore.updateInProgress('getProductMaterials', true);
+          requestStore.updateInProgress("getProductMaterials", true);
           axios
-            .get('/product/' + id + '/get-materials?page=' + page)
+            .get("/product/" + id + "/get-materials?page=" + page)
             .then((response) => {
               if (page === 1) {
                 this.selected_items = response.data.data;
@@ -229,13 +143,9 @@ export const useProductStore = defineStore('product', {
                   response.data.data
                 );
               }
-              this.materials_current_page =
-                response.data.current_page;
+              this.materials_current_page = response.data.current_page;
               this.materials_last_page = response.data.last_page;
-              requestStore.updateInProgress(
-                'getProductMaterials',
-                false
-              );
+              requestStore.updateInProgress("getProductMaterials", false);
             });
         }
       }
@@ -244,15 +154,17 @@ export const useProductStore = defineStore('product', {
       this.selected_items = [];
     },
     deleteProduct(id) {
-      const confirmed = confirm('Are you sure?');
+      const confirmed = confirm(
+        "Da li Ste sigurni da želite obrisati ovo jelo?"
+      );
       if (confirmed) {
         const modalStore = useModalStore();
         const requestStore = useRequestStore();
         const notificationStore = useNotificationStore();
         if (!requestStore.in_progress.deleteProduct) {
-          requestStore.updateInProgress('deleteProduct', true);
+          requestStore.updateInProgress("deleteProduct", true);
           axios
-            .delete('/product/delete/' + id)
+            .delete("/product/delete/" + id)
             .then((response) => {
               const category_index = this.products.findIndex((el) => {
                 return (
@@ -272,21 +184,24 @@ export const useProductStore = defineStore('product', {
                     product_index,
                     1
                   );
+                  if (this.products[category_index].products.length === 0) {
+                    this.products.splice(category_index, 1);
+                  }
                 }
               }
               notificationStore.addNotification({
-                type: 'success',
+                type: "success",
                 message: response.data.message,
               });
-              requestStore.updateInProgress('deleteProduct', false);
+              requestStore.updateInProgress("deleteProduct", false);
               modalStore.toggleModal();
             })
-            .catch((error) => {
+            .catch(() => {
               notificationStore.addNotification({
-                type: 'error',
-                message: error.response.data.message,
+                type: "error",
+                message: "Došlo je do pogreške, jelo nije obrisano.",
               });
-              requestStore.updateInProgress('deleteProduct', false);
+              requestStore.updateInProgress("deleteProduct", false);
             });
         }
       }

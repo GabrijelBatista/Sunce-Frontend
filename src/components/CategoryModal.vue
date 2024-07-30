@@ -23,14 +23,13 @@
       </div>
       <div class="mt-4">
         <p class="mb-4 text-sm">
-          <label
-            class="block mb-2 text-sm font-medium text-gray-900"
-            for="name"
+          <label class="block mb-2 text-sm font-medium text-gray-900" for="name"
             >Ime kategorije</label
           >
           <input
             type="text"
             placeholder="Ime"
+            autocomplete="off"
             name="name"
             max="20"
             v-model="name"
@@ -57,9 +56,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { useCategoryStore } from '/src/store/category';
-import { useModalStore } from '/src/store/modal';
+import { ref, computed } from "vue";
+import { useCategoryStore } from "/src/store/category";
+import { useModalStore } from "/src/store/modal";
 
 const categoryStore = useCategoryStore();
 const modalStore = useModalStore();
@@ -69,15 +68,15 @@ const props = defineProps({
   modal: Object | null,
 });
 
-const name = props.modal.item ? ref(props.modal.item.name) : ref('');
+const name = props.modal.item ? ref(props.modal.item.name) : ref("");
 const type = computed({
   get() {
-    return props.current_route === 'Products' ? 1 : 2;
+    return props.current_route === "Products" ? 1 : 2;
   },
 });
 
 const toggleAddCategoryModal = () => {
-  name.value = '';
+  name.value = "";
   modalStore.toggleModal();
 };
 

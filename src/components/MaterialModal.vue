@@ -34,6 +34,7 @@
                 required
                 type="text"
                 placeholder="Ime"
+                autocomplete="off"
                 name="name"
                 max="20"
                 v-model="name"
@@ -46,9 +47,7 @@
                 for="name"
                 >Kategorija</label
               >
-              <AutocompleteCategory
-                endpoint="/category/autocomplete?type=2"
-              />
+              <AutocompleteCategory endpoint="/category/autocomplete?type=2" />
             </div>
           </div>
           <div class="mb-4 text-sm flex justify-center">
@@ -62,6 +61,7 @@
                 required
                 type="number"
                 placeholder="Cijena"
+                autocomplete="off"
                 name="price_per_uom"
                 max="1000000"
                 step=".01"
@@ -116,9 +116,7 @@
                       {{ product.material_quantity }}
                       {{ uom }}
                       ({{
-                        formatNumber(
-                          product.material_quantity * price_per_uom
-                        )
+                        formatNumber(product.material_quantity * price_per_uom)
                       }}
                       KM)
                     </div>
@@ -190,20 +188,14 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  computed,
-  onBeforeMount,
-  onBeforeUnmount,
-  onMounted,
-} from 'vue';
-import AutocompleteCategory from './AutocompleteCategory.vue';
-import Spinner from './Spinner.vue';
-import { useMaterialStore } from '/src/store/material';
-import { useCategoryStore } from '/src/store/category';
-import { useModalStore } from '/src/store/modal';
-import { useRequestStore } from '/src/store/request';
-import { useNotificationStore } from '/src/store/notification';
+import { ref, computed, onBeforeMount, onBeforeUnmount, onMounted } from "vue";
+import AutocompleteCategory from "./AutocompleteCategory.vue";
+import Spinner from "./Spinner.vue";
+import { useMaterialStore } from "/src/store/material";
+import { useCategoryStore } from "/src/store/category";
+import { useModalStore } from "/src/store/modal";
+import { useRequestStore } from "/src/store/request";
+import { useNotificationStore } from "/src/store/notification";
 
 const categoryStore = useCategoryStore();
 const materialStore = useMaterialStore();
@@ -211,17 +203,13 @@ const modalStore = useModalStore();
 const requestStore = useRequestStore();
 const notificationStore = useNotificationStore();
 
-const name = modalStore.modal.item
-  ? ref(modalStore.modal.item.name)
-  : ref('');
+const name = modalStore.modal.item ? ref(modalStore.modal.item.name) : ref("");
 const price_per_uom = modalStore.modal.item
-  ? ref(modalStore.modal.item.price_per_uom.toFixed(2))
-  : ref('');
-const uom = modalStore.modal.item
-  ? ref(modalStore.modal.item.uom)
-  : ref('');
+  ? ref(Number(modalStore.modal.item.price_per_uom).toFixed(2))
+  : ref("");
+const uom = modalStore.modal.item ? ref(modalStore.modal.item.uom) : ref("");
 const original_price_per_uom = modalStore.modal.item
-  ? ref(modalStore.modal.item.price_per_uom)
+  ? ref(Number(modalStore.modal.item.price_per_uom))
   : ref(0);
 
 const category = computed({
@@ -286,8 +274,8 @@ const saveMaterial = () => {
     materialStore.saveMaterial(material, cat);
   } else {
     notificationStore.addNotification({
-      type: 'error',
-      message: 'Category is not selected.',
+      type: "error",
+      message: "Kategorija nije odabrana.",
     });
   }
 };
@@ -297,21 +285,21 @@ const deleteMaterial = () => {
 };
 
 onMounted(() => {
-  const body = document.getElementById('products-body');
+  const body = document.getElementById("products-body");
   if (body) {
-    body.addEventListener('scrollend', handleScroll);
+    body.addEventListener("scrollend", handleScroll);
   }
 });
 
 onBeforeUnmount(() => {
-  const body = document.getElementById('products-body');
+  const body = document.getElementById("products-body");
   if (body) {
-    body.removeEventListener('scrollend', handleScroll);
+    body.removeEventListener("scrollend", handleScroll);
   }
 });
 
 const handleScroll = () => {
-  const body = document.getElementById('products-body');
+  const body = document.getElementById("products-body");
   if (body.scrollTop + body.offsetHeight >= body.scrollHeight) {
     materialStore.getMaterialProducts(
       modalStore.modal.item.id,

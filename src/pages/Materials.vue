@@ -9,14 +9,9 @@
 </template>
 
 <script setup>
-import {
-  computed,
-  onBeforeMount,
-  onBeforeUnmount,
-  onMounted,
-} from 'vue';
-import { useMaterialStore } from '/src/store/material';
-import MaterialsTable from '/src/components/MaterialsTable.vue';
+import { computed, onBeforeMount, onBeforeUnmount, onMounted } from "vue";
+import { useMaterialStore } from "/src/store/material";
+import MaterialsTable from "/src/components/MaterialsTable.vue";
 
 const materialStore = useMaterialStore();
 
@@ -35,24 +30,21 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
-  const container = document.getElementById('main-container');
-  container.addEventListener('scrollend', handleScroll);
+  let container = document.getElementById("main-container");
+  container.scrollTop = 0;
+  container.addEventListener("scrollend", handleScroll);
 });
 
 onBeforeUnmount(() => {
-  const container = document.getElementById('main-container');
-  container.removeEventListener('scrollend', handleScroll);
+  const container = document.getElementById("main-container");
+  container.removeEventListener("scrollend", handleScroll);
+  materialStore.$reset();
 });
 
 const handleScroll = () => {
-  const container = document.getElementById('main-container');
-  if (
-    container.scrollTop + container.offsetHeight >=
-    container.scrollHeight
-  ) {
-    materialStore.getMaterials(
-      materialStore.categories_current_page + 1
-    );
+  const container = document.getElementById("main-container");
+  if (container.scrollTop + container.offsetHeight >= container.scrollHeight) {
+    materialStore.getMaterials(materialStore.categories_current_page + 1);
   }
 };
 </script>

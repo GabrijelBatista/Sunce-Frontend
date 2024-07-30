@@ -30,6 +30,7 @@
           >
           <input
             type="password"
+            autocomplete="off"
             placeholder="••••••••"
             name="current_password"
             max="20"
@@ -46,6 +47,7 @@
           <input
             type="password"
             placeholder="••••••••"
+            autocomplete="off"
             name="password"
             max="20"
             v-model="password"
@@ -61,6 +63,7 @@
           <input
             type="password"
             placeholder="••••••••"
+            autocomplete="off"
             name="password_confirmation"
             max="20"
             v-model="password_confirmation"
@@ -88,23 +91,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useCategoryStore } from '/src/store/category';
-import { useModalStore } from '/src/store/modal';
-import { useNotificationStore } from '/src/store/notification';
-import axios from 'axios';
+import { ref } from "vue";
+import { useCategoryStore } from "/src/store/category";
+import { useModalStore } from "/src/store/modal";
+import { useNotificationStore } from "/src/store/notification";
+import axios from "axios";
 
 const modalStore = useModalStore();
 const notificationStore = useNotificationStore();
 
-const current_password = ref('');
-const password = ref('');
-const password_confirmation = ref('');
+const current_password = ref("");
+const password = ref("");
+const password_confirmation = ref("");
 
 const togglePasswordModal = () => {
-  current_password.value = '';
-  password.value = '';
-  password_confirmation.value = '';
+  current_password.value = "";
+  password.value = "";
+  password_confirmation.value = "";
   modalStore.toggleModal();
 };
 
@@ -116,18 +119,18 @@ const savePassword = () => {
   };
 
   axios
-    .put('/user/change-password', data)
+    .put("/user/change-password", data)
     .then((response) => {
       notificationStore.addNotification({
-        type: 'success',
-        message: response.data.message,
+        type: "success",
+        message: "Lozinka uspješno promijenjena.",
       });
       togglePasswordModal();
     })
     .catch((error) => {
       notificationStore.addNotification({
-        type: 'error',
-        message: error.response.data.message,
+        type: "error",
+        message: "Došlo je do pogreške, lozinka nije promijenjena.",
       });
     });
 };

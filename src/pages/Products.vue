@@ -9,14 +9,9 @@
 </template>
 
 <script setup>
-import {
-  computed,
-  onBeforeMount,
-  onBeforeUnmount,
-  onMounted,
-} from 'vue';
-import { useProductStore } from '/src/store/product';
-import ProductsTable from '/src/components/ProductsTable.vue';
+import { computed, onBeforeMount, onBeforeUnmount, onMounted } from "vue";
+import { useProductStore } from "/src/store/product";
+import ProductsTable from "/src/components/ProductsTable.vue";
 
 const productStore = useProductStore();
 
@@ -35,24 +30,21 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
-  const container = document.getElementById('main-container');
-  container.addEventListener('scrollend', handleScroll);
+  let container = document.getElementById("main-container");
+  container.scrollTop = 0;
+  container.addEventListener("scrollend", handleScroll);
 });
 
 onBeforeUnmount(() => {
-  const container = document.getElementById('main-container');
-  container.removeEventListener('scrollend', handleScroll);
+  const container = document.getElementById("main-container");
+  container.removeEventListener("scrollend", handleScroll);
+  productStore.$reset();
 });
 
 const handleScroll = () => {
-  const container = document.getElementById('main-container');
-  if (
-    container.scrollTop + container.offsetHeight >=
-    container.scrollHeight
-  ) {
-    productStore.getProducts(
-      productStore.categories_current_page + 1
-    );
+  const container = document.getElementById("main-container");
+  if (container.scrollTop + container.offsetHeight >= container.scrollHeight) {
+    productStore.getProducts(productStore.categories_current_page + 1);
   }
 };
 </script>

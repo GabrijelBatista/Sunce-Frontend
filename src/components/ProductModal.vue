@@ -31,6 +31,7 @@
             >
             <input
               required
+              autocomplete="off"
               type="text"
               placeholder="Ime"
               name="name"
@@ -62,6 +63,7 @@
               required
               type="number"
               placeholder="Cijena"
+              autocomplete="off"
               name="price_sell"
               max="1000000"
               step=".01"
@@ -118,6 +120,7 @@
             <input
               type="number"
               placeholder="Količina"
+              autocomplete="off"
               name="material_quantity"
               max="1000000"
               step=".01"
@@ -126,17 +129,14 @@
             />
           </div>
           <div class="m-2 my-6">
-            {{ selected_material ? selected_material.uom : '' }}
+            {{ selected_material ? selected_material.uom : "" }}
           </div>
           <button
             type="button"
             class="px-6 py-2 m-2 my-4 text-blue-100 bg-gray-600 rounded hover:bg-blue-300"
             @click="addMaterialToList(selected_material)"
           >
-            <font-awesome-icon
-              :icon="['fas', 'circle-plus']"
-              size="xl"
-            />
+            <font-awesome-icon :icon="['fas', 'circle-plus']" size="xl" />
           </button>
         </div>
 
@@ -172,17 +172,14 @@
               </td>
               <td class="p-2 w-20 text-center">
                 <div
-                  class="rounded-md bg-gray-400 cursor-pointer hover:bg-blue-300"
+                  class="text-red-800 hover:text-red-400 cursor-pointer"
                   @click="removeMaterialFromList(i)"
                 >
-                  Remove
+                  X
                 </div>
               </td>
             </tr>
-            <tr
-              v-show="request_in_progress.getProductMaterials"
-              class="mb-10"
-            >
+            <tr v-show="request_in_progress.getProductMaterials" class="mb-10">
               <Spinner />
             </tr>
           </tbody>
@@ -215,24 +212,18 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  computed,
-  onBeforeMount,
-  onBeforeUnmount,
-  onMounted,
-} from 'vue';
-import AutocompleteCategory from './AutocompleteCategory.vue';
-import AutocompleteItem from './AutocompleteItem.vue';
-import Spinner from './Spinner.vue';
-import { useProductStore } from '/src/store/product';
-import { useCategoryStore } from '/src/store/category';
-import { useModalStore } from '/src/store/modal';
-import { useRequestStore } from '/src/store/request';
-import { useNotificationStore } from '/src/store/notification';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { ref, computed, onBeforeMount, onBeforeUnmount, onMounted } from "vue";
+import AutocompleteCategory from "./AutocompleteCategory.vue";
+import AutocompleteItem from "./AutocompleteItem.vue";
+import Spinner from "./Spinner.vue";
+import { useProductStore } from "/src/store/product";
+import { useCategoryStore } from "/src/store/category";
+import { useModalStore } from "/src/store/modal";
+import { useRequestStore } from "/src/store/request";
+import { useNotificationStore } from "/src/store/notification";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faCirclePlus);
 
@@ -242,19 +233,17 @@ const modalStore = useModalStore();
 const requestStore = useRequestStore();
 const notificationStore = useNotificationStore();
 
-const name = modalStore.modal.item
-  ? ref(modalStore.modal.item.name)
-  : ref('');
+const name = modalStore.modal.item ? ref(modalStore.modal.item.name) : ref("");
 const price_sell = modalStore.modal.item
   ? ref(modalStore.modal.item.price_sell)
-  : ref('');
+  : ref("");
 const price_cost = modalStore.modal.item
   ? ref(modalStore.modal.item.price_cost)
   : ref(0);
 const price_diff = modalStore.modal.item
   ? ref(modalStore.modal.item.price_diff)
   : ref(0);
-const material_quantity = ref('');
+const material_quantity = ref("");
 
 const category = computed({
   get() {
@@ -303,11 +292,10 @@ const addMaterialToList = (material) => {
       material,
       material_quantity: material_quantity.value,
     });
-    price_cost.value +=
-      material.price_per_uom * material_quantity.value;
+    price_cost.value += material.price_per_uom * material_quantity.value;
     calculatePriceDiff();
 
-    material_quantity.value = '';
+    material_quantity.value = "";
   }
 };
 
@@ -349,24 +337,24 @@ const saveProduct = () => {
     productStore.saveProduct(product, cat);
   } else {
     notificationStore.addNotification({
-      type: 'error',
-      message: 'Category is not selected.',
+      type: "error",
+      message: "Kategorija nije odabrana.",
     });
   }
 };
 
 onMounted(() => {
-  const body = document.getElementById('materials-body');
-  body.addEventListener('scrollend', handleScroll);
+  const body = document.getElementById("materials-body");
+  body.addEventListener("scrollend", handleScroll);
 });
 
 onBeforeUnmount(() => {
-  const body = document.getElementById('materials-body');
-  body.removeEventListener('scrollend', handleScroll);
+  const body = document.getElementById("materials-body");
+  body.removeEventListener("scrollend", handleScroll);
 });
 
 const handleScroll = () => {
-  const body = document.getElementById('materials-body');
+  const body = document.getElementById("materials-body");
   if (body.scrollTop + body.offsetHeight >= body.scrollHeight) {
     productStore.getProductMaterials(
       modalStore.modal.item.id,
