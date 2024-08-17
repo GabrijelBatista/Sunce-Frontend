@@ -34,7 +34,7 @@
                 required
                 type="text"
                 placeholder="Ime"
-                autocomplete="off"
+                autocomplete="one-time-code"
                 name="name"
                 max="20"
                 v-model="name"
@@ -61,7 +61,7 @@
                 required
                 type="number"
                 placeholder="Cijena"
-                autocomplete="off"
+                autocomplete="one-time-code"
                 name="price_per_uom"
                 max="1000000"
                 step=".01"

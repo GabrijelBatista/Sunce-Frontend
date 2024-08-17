@@ -31,7 +31,7 @@
             >
             <input
               required
-              autocomplete="off"
+              autocomplete="one-time-code"
               type="text"
               placeholder="Ime"
               name="name"
@@ -63,7 +63,7 @@
               required
               type="number"
               placeholder="Cijena"
-              autocomplete="off"
+              autocomplete="one-time-code"
               name="price_sell"
               max="1000000"
               step=".01"
@@ -120,7 +120,7 @@
             <input
               type="number"
               placeholder="Količina"
-              autocomplete="off"
+              autocomplete="one-time-code"
               name="material_quantity"
               max="1000000"
               step=".01"

@@ -25,7 +25,7 @@
             <input
               type="code"
               name="code"
-              autocomplete="off"
+              autocomplete="one-time-code"
               id="code"
               class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-md focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
               placeholder="123456"

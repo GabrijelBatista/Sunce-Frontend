@@ -29,7 +29,7 @@
           <input
             type="text"
             placeholder="Ime"
-            autocomplete="off"
+            autocomplete="one-time-code"
             name="name"
             max="20"
             v-model="name"

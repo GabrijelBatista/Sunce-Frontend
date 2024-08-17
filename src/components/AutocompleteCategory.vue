@@ -1,7 +1,7 @@
 <template>
   <div class="my-2" v-click-outside="() => reset()">
     <input
-      autocomplete="off"
+      autocomplete="one-time-code"
       type="text"
       class="bg-gray-50 border border-gray-950 text-gray-900 sm:text-sm rounded-md focus:ring-primary-950 focus:border-primary-950 block w-full p-2.5"
       name="term"
@@ -30,8 +30,8 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
-import { useCategoryStore } from '/src/store/category';
+import { computed, ref } from "vue";
+import { useCategoryStore } from "/src/store/category";
 
 const props = defineProps({
   endpoint: String,
@@ -42,7 +42,7 @@ const categoryStore = useCategoryStore();
 
 const term = categoryStore.selected_category
   ? ref(categoryStore.selected_category.name)
-  : ref('');
+  : ref("");
 
 const items = computed({
   get() {
@@ -52,19 +52,19 @@ const items = computed({
 
 const selectItem = (item) => {
   categoryStore.selectCategory(item);
-  term.value = item ? item.name : '';
+  term.value = item ? item.name : "";
 };
 
 const getItems = () => {
   if (term.value.length > 2 || term.value.length === 0) {
-    const endpoint = props.endpoint + '&term=' + term.value;
+    const endpoint = props.endpoint + "&term=" + term.value;
     categoryStore.getCategories(endpoint);
   }
 };
 
 const reset = () => {
   if (!categoryStore.selected_category) {
-    term.value = '';
+    term.value = "";
     selectItem(null);
   }
 };

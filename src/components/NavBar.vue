@@ -13,8 +13,8 @@
       <div class="flex items-center md:order-2" v-if="userStore.token">
         <div class="relative" v-if="userStore.verified">
           <input
-            type="search"
-            autocomplete="off"
+            type="text"
+            autocomplete="one-time-code"
             class="block w-full p-2 text-sm text-gray-900 rounded-md bg-gray-50 focus:ring-white focus:border-white"
             placeholder="Pretraga"
             v-model="term"

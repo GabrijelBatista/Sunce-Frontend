@@ -30,7 +30,7 @@
           >
           <input
             type="password"
-            autocomplete="off"
+            autocomplete="one-time-code"
             placeholder="••••••••"
             name="current_password"
             max="20"
@@ -47,7 +47,7 @@
           <input
             type="password"
             placeholder="••••••••"
-            autocomplete="off"
+            autocomplete="one-time-code"
             name="password"
             max="20"
             v-model="password"
@@ -63,7 +63,7 @@
           <input
             type="password"
             placeholder="••••••••"
-            autocomplete="off"
+            autocomplete="one-time-code"
             name="password_confirmation"
             max="20"
             v-model="password_confirmation"
