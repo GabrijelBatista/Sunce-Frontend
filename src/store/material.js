@@ -77,9 +77,6 @@ export const useMaterialStore = defineStore("material", {
                 this.materials[category_index].materials[material_index] =
                   material;
               }
-            } else if (path === "add") {
-              category.materials = [material];
-              this.materials.push(category);
             }
             notificationStore.addNotification({
               type: "success",

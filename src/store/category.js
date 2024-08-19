@@ -4,7 +4,7 @@ import { useNotificationStore } from "/src/store/notification";
 import { useModalStore } from "/src/store/modal";
 import { useMaterialStore } from "/src/store/material";
 import { useProductStore } from "/src/store/product";
-
+import { useRequestStore } from "/src/store/request";
 import { reactive } from "vue";
 
 export const useCategoryStore = defineStore("category", {
@@ -29,15 +29,36 @@ export const useCategoryStore = defineStore("category", {
           .delete("/category/delete/" + category.id)
           .then(() => {
             const itemsStore =
-              category.type === 1 ? useProductStore() : useMaterialStore();
-
-            const items = category.type === 1 ? "products" : "materials";
+              category.type == 1 ? useProductStore() : useMaterialStore();
+            const items = category.type == 1 ? "products" : "materials";
 
             const category_index = itemsStore[items].findIndex(
               (el) => el.id === category.id
             );
             if (category_index > -1) {
-              itemsStore[items].splice(category_index, 1);
+              const requestStore = useRequestStore();
+              requestStore.updateInProgress(
+                category.type == 1 ? "getProducts" : "getMaterials",
+                true
+              );
+              const endpoint =
+                category.type == 1
+                  ? "/category/get-product-categories" +
+                    (itemsStore.term !== null ? "?term=" + itemsStore.term : "")
+                  : "/category/get-material-categories" +
+                    (itemsStore.term !== null
+                      ? "?term=" + itemsStore.term
+                      : "");
+              axios.get(endpoint).then((response) => {
+                itemsStore[items] = response.data.data;
+                itemsStore.categories_current_page = response.data.current_page;
+                itemsStore.categories_last_page = response.data.last_page;
+                document.getElementById("main-container").scrollTop = 0;
+                requestStore.updateInProgress(
+                  category.type == 1 ? "getProducts" : "getMaterials",
+                  false
+                );
+              });
             }
             notificationStore.addNotification({
               type: "success",
@@ -73,7 +94,7 @@ export const useCategoryStore = defineStore("category", {
           const itemsStore =
             category.type === 1 ? useProductStore() : useMaterialStore();
 
-          const items = category.type === 1 ? "products" : "materials";
+          const items = category.type == 1 ? "products" : "materials";
           if (path === "edit") {
             const category_index = itemsStore[items].findIndex(
               (el) => el.id === category.id
@@ -82,8 +103,25 @@ export const useCategoryStore = defineStore("category", {
               itemsStore[items][category_index].name = category.name;
             }
           } else {
-            response.data.category[items] = [];
-            itemsStore[items].push(response.data.category);
+            const requestStore = useRequestStore();
+            requestStore.updateInProgress(
+              category.type == 1 ? "getProducts" : "getMaterials",
+              true
+            );
+            const endpoint =
+              category.type == 1
+                ? "/category/get-product-categories"
+                : "/category/get-material-categories";
+            axios.get(endpoint).then((response) => {
+              itemsStore[items] = response.data.data;
+              itemsStore.categories_current_page = response.data.current_page;
+              itemsStore.categories_last_page = response.data.last_page;
+              document.getElementById("main-container").scrollTop = 0;
+              requestStore.updateInProgress(
+                category.type == 1 ? "getProducts" : "getMaterials",
+                false
+              );
+            });
           }
           notificationStore.addNotification({
             type: "success",
